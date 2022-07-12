@@ -23,13 +23,13 @@ import { Actor, ActorDamageByActorSource, ActorDamageCause, ActorDamageSource, A
 import { AttributeId, AttributeInstance, BaseAttributeMap } from "./attribute";
 import { Bedrock } from "./bedrock";
 import { Biome } from "./biome";
-import { Block, BlockActor, BlockLegacy, BlockSource, ChestBlockActor } from "./block";
+import { Block, BlockActor, BlockLegacy, BlockSource, BlockUtils, ChestBlockActor } from "./block";
 import { ChunkSource, LevelChunk } from "./chunk";
 import { Command, CommandContext, CommandOutput, CommandOutputParameter, CommandOutputType, CommandPermissionLevel, CommandPositionFloat, CommandRegistry, CommandVersion, MCRESULT, MinecraftCommands } from "./command";
 import { CommandName } from "./commandname";
 import { CommandOrigin, ServerCommandOrigin, VirtualCommandOrigin } from "./commandorigin";
 import './commandparsertypes';
-import { OnHitSubcomponent } from "./components";
+import { HitResult, OnHitSubcomponent } from "./components";
 import { Certificate, ConnectionRequest, JsonValue } from "./connreq";
 import { Dimension } from "./dimension";
 import { MobEffect, MobEffectInstance } from "./effects";
@@ -1197,6 +1197,16 @@ BlockSource.prototype.getChunk = procHacker.js("?getChunk@BlockSource@@QEBAPEAVL
 BlockSource.prototype.getChunkAt = procHacker.js("?getChunkAt@BlockSource@@UEBAPEAVLevelChunk@@AEBVBlockPos@@@Z", LevelChunk, {this:BlockSource}, BlockPos);
 BlockSource.prototype.getChunkSource = procHacker.js("?getChunkSource@BlockSource@@UEAAAEAVChunkSource@@XZ", ChunkSource, {this:BlockSource});
 
+BlockUtils.isDownwardFlowingLiquid = procHacker.js("?isDownwardFlowingLiquid@BlockUtils@@SA_NAEBVBlock@@@Z", bool_t, null, Block);
+BlockUtils.isBeehiveBlock = procHacker.js("?isBeehiveBlock@BlockUtils@@SA_NAEBVBlockLegacy@@@Z", bool_t, null, BlockLegacy);
+BlockUtils.isWaterSource = procHacker.js("?isWaterSource@BlockUtils@@SA_NAEBVBlock@@@Z", bool_t, null, Block);
+BlockUtils.isFullFlowingLiquid = procHacker.js("?isFullFlowingLiquid@BlockUtils@@SA_NAEBVBlock@@@Z", bool_t, null, Block);
+BlockUtils.allowsNetherVegetation = procHacker.js("?allowsNetherVegetation@BlockUtils@@SA_NAEBVBlockLegacy@@@Z", bool_t, null, BlockLegacy);
+BlockUtils.isThinFenceOrWallBlock = procHacker.js("?isThinFenceOrWallBlock@BlockUtils@@SA_NAEBVBlock@@@Z", bool_t, null, Block);
+BlockUtils.isLiquidSource = procHacker.js("?isLiquidSource@BlockUtils@@SA_NAEBVBlock@@@Z", bool_t, null, Block);
+BlockUtils.getLiquidBlockHeight = procHacker.js("?getLiquidBlockHeight@BlockUtils@@SAMAEBVBlock@@AEBVBlockPos@@@Z", float32_t, null, Block, BlockPos);
+BlockUtils.canGrowTreeWithBeehive = procHacker.js("?canGrowTreeWithBeehive@BlockUtils@@SA_NAEBVBlock@@@Z", bool_t, null, Block);
+
 // abilties.ts
 Abilities.prototype.getCommandPermissionLevel = procHacker.js("?getCommandPermissions@Abilities@@QEBA?AW4CommandPermissionLevel@@XZ", int32_t, {this:Abilities});
 Abilities.prototype.getPlayerPermissionLevel = procHacker.js("?getPlayerPermissions@Abilities@@QEBA?AW4PlayerPermissionLevel@@XZ", int32_t, {this:Abilities});
@@ -1480,6 +1490,8 @@ StructureManager.prototype.getOrCreate = procHacker.js("?getOrCreate@StructureMa
 OnHitSubcomponent.prototype.readfromJSON = procHacker.jsv('??_7FreezeOnHitSubcomponent@@6B@', '?readfromJSON@FreezeOnHitSubcomponent@@UEAAXAEAVValue@Json@@AEBVSemVersion@@@Z', void_t, {this:OnHitSubcomponent}, JsonValue);
 OnHitSubcomponent.prototype.writetoJSON = procHacker.jsv('??_7FreezeOnHitSubcomponent@@6B@', '?writetoJSON@FreezeOnHitSubcomponent@@UEBAXAEAVValue@Json@@@Z', void_t, {this:OnHitSubcomponent}, JsonValue);
 (OnHitSubcomponent.prototype as any)._getName = procHacker.jsv('??_7FreezeOnHitSubcomponent@@6B@', '?getName@FreezeOnHitSubcomponent@@UEAAPEBDXZ', StaticPointer, {this:OnHitSubcomponent});
+
+HitResult.prototype.getEntity = procHacker.js("?getEntity@HitResult@@QEBAPEAVActor@@XZ", Actor, {this:HitResult});
 
 // chunk.ts
 LevelChunk.prototype.getBiome = procHacker.js("?getBiome@LevelChunk@@QEBAAEAVBiome@@AEBVChunkBlockPos@@@Z", Biome, {this:LevelChunk});
