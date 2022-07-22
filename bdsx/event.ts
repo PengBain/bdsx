@@ -6,7 +6,7 @@ import { MinecraftPacketIds } from "./bds/packetids";
 import { CANCEL } from "./common";
 import { Event, EventEx } from "./eventtarget";
 import type { BlockAttackEvent, BlockDestroyEvent, BlockDestructionStartEvent, BlockInteractedWithEvent, BlockPlaceEvent, ButtonPressEvent, CampfireTryDouseFire, CampfireTryLightFire, ChestOpenEvent, ChestPairEvent, FallOnBlockEvent, FarmlandDecayEvent, LightningHitBlockEvent, PistonMoveEvent, ProjectileHitBlockEvent, SculkSensorActivateEvent, SculkShriekEvent } from "./event_impl/blockevent";
-import type { EntityConsumeTotemEvent, EntityCreatedEvent, EntityDieEvent, EntityHeathChangeEvent, EntityHurtEvent, EntitySneakEvent, EntityStartRidingEvent, EntityStartSwimmingEvent, EntityStopRidingEvent, ItemUseEvent, ItemUseOnBlockEvent, PlayerAttackEvent, PlayerCritEvent, PlayerDimensionChangeEvent, PlayerDropItemEvent, PlayerInventoryChangeEvent, PlayerJoinEvent, PlayerJumpEvent, PlayerLeftEvent, PlayerLevelUpEvent, PlayerPickupItemEvent, PlayerRespawnEvent, PlayerSleepInBedEvent, PlayerUseItemEvent, ProjectileHitEvent, ProjectileShootEvent, SplashPotionHitEvent } from "./event_impl/entityevent";
+import type { EntityCarriedItemChangedEvent, EntityConsumeTotemEvent, EntityCreatedEvent, EntityDieEvent, EntityHeathChangeEvent, EntityHurtEvent, EntityKnockbackEvent, EntitySneakEvent, EntityStartRidingEvent, EntityStartSwimmingEvent, EntityStopRidingEvent, ItemUseEvent, ItemUseOnBlockEvent, PlayerAttackEvent, PlayerCritEvent, PlayerDimensionChangeEvent, PlayerDropItemEvent, PlayerInventoryChangeEvent, PlayerJoinEvent, PlayerJumpEvent, PlayerLeftEvent, PlayerLevelUpEvent, PlayerPickupItemEvent, PlayerRespawnEvent, PlayerSleepInBedEvent, PlayerUseItemEvent, ProjectileHitEvent, ProjectileShootEvent, SplashPotionHitEvent } from "./event_impl/entityevent";
 import type { LevelExplodeEvent, LevelSaveEvent, LevelTickEvent, LevelWeatherChangeEvent } from "./event_impl/levelevent";
 import type { ObjectiveCreateEvent, QueryRegenerateEvent, ScoreAddEvent, ScoreRemoveEvent, ScoreResetEvent, ScoreSetEvent } from "./event_impl/miscevent";
 import type { nethook } from "./nethook";
@@ -104,7 +104,7 @@ export namespace events {
     export const entityHealthChange = new Event<(event: EntityHeathChangeEvent) => void>();
     /**
      * Not cancellable.
-     * it can be occured multiple times even it already died.
+     * it can be occurred multiple times even it already died.
      */
     export const entityDie = new Event<(event: EntityDieEvent) => void>();
     /** Not cancellable */
@@ -115,6 +115,8 @@ export namespace events {
     export const entityStartRiding = new Event<(event: EntityStartRidingEvent) => void | CANCEL>();
     /** Cancellable but the client is still exiting though it will automatically ride again after rejoin */
     export const entityStopRiding = new Event<(event: EntityStopRidingEvent) => void | CANCEL>();
+    /** Not cancellable */
+    export const entityCarriedItemChanged = new Event<(event: EntityCarriedItemChangedEvent) => void>();
     /** Cancellable */
     export const playerAttack = new Event<(event: PlayerAttackEvent) => void | CANCEL>();
     /** Cancellable */
@@ -174,6 +176,11 @@ export namespace events {
      * Cancelling this event will prevent the player from changing dimension (e.g : entering a nether portal).
      */
     export const playerDimensionChange = new Event<(event: PlayerDimensionChangeEvent) => void | CANCEL>();
+    /** Cancellable.
+     * Triggered when an entity has knockback applied to them (e.g : being hit by another entity).
+     * Cancelling this event will prevent the knockback from being applied.
+     */
+    export const entityKnockback = new Event<(event: EntityKnockbackEvent) => void | CANCEL>();
     ////////////////////////////////////////////////////////
     // Level events
 
@@ -215,7 +222,7 @@ export namespace events {
     /**
      * before system.shutdown, Minecraft is alive yet
      * LoopbackPacketSender is destroyed
-     * some commands are failed on this event. use `events.serverLeave` intead.
+     * some commands are failed on this event. use `events.serverLeave` instead.
      */
     export const serverStop = new Event<()=>void>();
 

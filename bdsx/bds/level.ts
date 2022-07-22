@@ -48,7 +48,7 @@ export class Level extends NativeClass {
     getEntities():Actor[] {
         abstract();
     }
-    getRuntimeEntity(runtimeId: ActorRuntimeID, getRemoved: boolean): Actor | null {
+    getRuntimeEntity(runtimeId: ActorRuntimeID, getRemoved: boolean = false): Actor | null {
         abstract();
     }
     getRuntimePlayer(runtimeId: ActorRuntimeID): Player | null {
@@ -58,7 +58,7 @@ export class Level extends NativeClass {
         abstract();
     }
     /**
-     * Destroyes a block at the given position
+     * Destroys a block at the given position
      *
      * @returns {boolean} Whether the block was destroyed successfully
      */

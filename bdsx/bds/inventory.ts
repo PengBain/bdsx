@@ -97,6 +97,11 @@ export enum CreativeItemCategory {
     Uncategorized,
 }
 
+export enum HandSlot {
+    Mainhand = 0,
+    Offhand = 1,
+}
+
 export class Item extends NativeClass {
     /**
      * Returns whether the item is allowed to be used in the offhand slot
@@ -210,6 +215,13 @@ export class ItemStackBase extends NativeClass {
     protected _setCustomLore(name:CxxVector<string>):void {
         abstract();
     }
+    /**
+     * just `ItemStackBase::add` in BDS.
+     * but it conflicts to {@link VoidPointer.prototype.add}
+     */
+    addAmount(amount: number): void {
+        abstract();
+    }
     remove(amount: number): void{
         abstract();
     }
@@ -221,6 +233,9 @@ export class ItemStackBase extends NativeClass {
         abstract();
     }
     getAuxValue():number{
+        abstract();
+    }
+    isValidAuxValue(aux: int32_t): boolean {
         abstract();
     }
     getMaxStackSize(): number{
@@ -406,7 +421,14 @@ export class ItemStackBase extends NativeClass {
     canDestroySpecial(block: Block): boolean{
         abstract();
     }
-    hurtAndBreak(count: number, actor: Actor): boolean{
+    /**
+     * Hurts the item's durability.
+     * Breaks the item if its durability reaches 0 or less.
+     * @param count delta damage
+     * @param owner owner of the item, if not null, server will send inventory.
+     * @returns returns whether hurt successfully or not
+     */
+    hurtAndBreak(count: number, owner: Actor|null = null): boolean{
         abstract();
     }
 }

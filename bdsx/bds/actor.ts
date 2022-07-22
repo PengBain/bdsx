@@ -301,7 +301,11 @@ export enum ActorFlags {
     InLove,
     Saddled,
     Powered,
+    /**
+     * @deprecated typo.
+     */
     Ignit0ed,
+    Ignited = 0xa,
     Baby,
     Converting,
     Critical,
@@ -1219,6 +1223,28 @@ export class Actor extends AbstractClass {
      * Get actor targeting block
      */
     getBlockTarget(): BlockPos{
+        abstract();
+    }
+
+    isAttackableGamemode(): boolean {
+        abstract();
+    }
+
+    isInvulnerableTo(damageSource: ActorDamageSource): boolean {
+        abstract();
+    }
+
+    canSee(target: Actor): boolean;
+    canSee(target: Vec3): boolean;
+    canSee(target: Actor | Vec3): boolean {
+        abstract();
+    }
+
+    isValidTarget(source: Actor|null = null): boolean {
+        abstract();
+    }
+
+    canAttack(target: Actor | null, unknown = false): boolean {
         abstract();
     }
 }

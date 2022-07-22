@@ -2,7 +2,7 @@ import { abstract } from "../common";
 import { VoidPointer } from "../core";
 import type { CxxVector } from "../cxxvector";
 import { nativeClass, NativeClass, nativeField } from "../nativeclass";
-import { bool_t, CxxString, CxxStringWith8Bytes, int32_t, uint16_t } from "../nativetype";
+import { bool_t, CxxString, CxxStringWith8Bytes, int32_t, uint16_t, uint8_t } from "../nativetype";
 import type { Actor, DimensionId, ItemActor } from "./actor";
 import type { ChunkPos } from "./blockpos";
 import { BlockPos } from "./blockpos";
@@ -87,6 +87,9 @@ export class BlockLegacy extends NativeClass {
     getSilkTouchedItemInstance(block: Block): ItemStack{
         abstract();
     }
+    getDestroySpeed(): number{
+        abstract();
+    }
 }
 
 @nativeClass(null)
@@ -163,6 +166,33 @@ export class Block extends NativeClass {
         abstract();
     }
     popResource(blockSource: BlockSource, blockPos: BlockPos, itemStack: ItemStack): ItemActor{
+        abstract();
+    }
+    canHurtAndBreakItem(): boolean{
+        abstract();
+    }
+    getThickness(): number{
+        abstract();
+    }
+    hasComparatorSignal(): boolean{
+        abstract();
+    }
+    getTranslucency(): number{
+        abstract();
+    }
+    getExplosionResistance(actor: Actor|null = null): number{
+        abstract();
+    }
+    getComparatorSignal(blockSource: BlockSource, blockPos: BlockPos, facing: uint8_t): number{
+        abstract();
+    }
+    getDirectSignal(blockSource: BlockSource, blockPos: BlockPos, facing: int32_t): number{
+        abstract();
+    }
+    isSignalSource(): boolean{
+        abstract();
+    }
+    getDestroySpeed(): number{
         abstract();
     }
 }
